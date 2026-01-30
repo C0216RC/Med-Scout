@@ -8,24 +8,29 @@
   <link rel="stylesheet" href="static/css/bulma.min.css">
   <link rel="stylesheet" href="static/css/index.css">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
   <script defer src="static/js/fontawesome.all.min.js"></script>
   
   <style>
+    body { font-family: 'Inter', sans-serif; color: #333; }
     .image-placeholder {
       width: 100%;
-      background-color: #f5f5f5;
-      border: 2px dashed #ccc;
+      background-color: #f8f9fa;
+      border: 2px dashed #dbdbdb;
       display: flex;
       align-items: center;
       justify-content: center;
-      color: #999;
+      color: #7a7a7a;
       font-weight: 500;
       margin-bottom: 1rem;
-      min-height: 300px;
+      min-height: 350px;
+      border-radius: 8px;
     }
-    .publication-title { font-family: 'Inter', sans-serif; font-weight: 800; }
-    .hero.is-light { background-color: #f9fafb; }
-    .section-title { margin-bottom: 2rem; font-weight: 700; }
+    .publication-title { font-weight: 800; font-size: 2.5rem !important; }
+    .section-title { font-weight: 700; margin-bottom: 1.5rem; border-bottom: 2px solid #eee; padding-bottom: 0.5rem; }
+    .hero.is-light { background-color: #f5f7f9; }
+    .author-block { font-size: 1.25rem; margin-bottom: 0.5rem; }
+    pre { background-color: #f1f1f1; border-radius: 6px; padding: 1.25rem; }
   </style>
 </head>
 <body>
@@ -36,11 +41,11 @@
         <div class="columns is-centered">
           <div class="column has-text-centered">
             <h1 class="title is-1 publication-title">Med-Scout: Curing MLLMs' Geometric Blindness in Medical Perception via Geometry-Aware RL Post-Training</h1>
+            
             <div class="is-size-5 publication-authors">
-              <span class="author-block">Ruichao Chen<sup>*</sup></span>
-            </div>
-            <div class="is-size-6 has-text-grey mt-2">
-              <sup>*</sup>Lead Researcher / Project Author
+              <span class="author-block">
+                Anglin Liu, Ruichao Chen, Yi Lu, Hongxia Xu, Jintai Chen
+              </span>
             </div>
 
             <div class="column has-text-centered">
@@ -54,7 +59,15 @@
                 <span class="link-block">
                   <a href="#" class="external-link button is-normal is-rounded is-dark">
                     <span class="icon"><i class="fab fa-github"></i></span>
-                    <span>Code (Coming Soon)</span>
+                    <span>Code</span>
+                  </a>
+                </span>
+                <span class="link-block">
+                  <a href="https://huggingface.co/datasets" target="_blank" class="external-link button is-normal is-rounded is-dark">
+                    <span class="icon">
+                      <img src="https://huggingface.co/front/assets/huggingface_logo-noborder.svg" alt="Hugging Face" style="width: 18px;">
+                    </span>
+                    <span>Hugging Face</span>
                   </a>
                 </span>
               </div>
@@ -72,10 +85,10 @@
           <h2 class="title is-3 section-title">Abstract</h2>
           <div class="content has-text-justified">
             <p>
-              尽管多模态大语言模型（MLLMs）在医疗诊断中表现出色，但我们发现它们普遍存在一个致命的感知缺陷：<b>几何盲视（Geometric Blindness）</b>。这种由于训练范式过度关注语言流畅性而忽视几何逻辑导致的缺陷，使得模型容易产生看似合理实则错误的幻觉。
+              Despite recent Multimodal Large Language Models (MLLMs)' linguistic prowess in medical diagnosis, we find even state-of-the-art MLLMs suffer from a critical perceptual deficit: <strong>geometric blindness</strong>. This failure to ground outputs in objective geometric constraints leads to plausible yet factually incorrect hallucinations, rooted in training paradigms that prioritize linguistic fluency over geometric fidelity. [cite: 60, 61]
             </p>
             <p>
-              本文提出了 <b>Med-Scout</b>，一个创新的后训练框架，通过强化学习（RL）利用未标注医疗图像中蕴含的几何逻辑来修复这一缺陷。Med-Scout 引入了三个关键代理任务：层级尺度定位、拓扑拼图重建和异常一致性检测。实验证明，Med-Scout 在几何感知能力上提升显著，超越了目前的通用及医疗专业模型。
+              This paper introduces <strong>Med-Scout</strong>, a novel framework that “cures” this blindness via Reinforcement Learning (RL) that leverages the intrinsic geometric logic latent within unlabeled medical images. [cite: 62] Instead of relying on costly expert annotations, Med-Scout derives verifiable supervision signals through three strategic proxy tasks: <strong>Hierarchical Scale Localization</strong>, <strong>Topological Jigsaw Reconstruction</strong>, and <strong>Anomaly Consistency Detection</strong>. [cite: 63] To rigorously quantify this deficit, we present <strong>Med-Scout-Bench</strong>, a new benchmark specifically designed to evaluate geometric perception. [cite: 64] Extensive evaluations show that Med-Scout significantly mitigates geometric blindness, outperforming leading proprietary and open-source MLLMs by over <strong>40%</strong> on our benchmark. [cite: 65]
             </p>
           </div>
         </div>
@@ -85,17 +98,19 @@
 
   <section class="section">
     <div class="container is-max-desktop">
-      <h2 class="title is-3 section-title has-text-centered">Finding the "Geometric Blindness"</h2>
+      <h2 class="title is-3 section-title">Pilot Study: Unveiling Geometric Blindness</h2>
       <div class="columns is-centered">
         <div class="column is-full">
           <div class="image-placeholder">
-            [插入图片：Figure 1 - Pilot Study: Scale, Topology, and Anomaly Blindness]
+            [Insert Image 1: Pilot Study - Findings I, II, and III]
           </div>
+          
           <div class="content mt-4">
+            <p>We identified three critical findings through preliminary experiments on state-of-the-art models: [cite: 171]</p>
             <ul>
-              <li><b>Finding I: 尺度不一致性。</b> 模型在局部切片中能识别病灶，但在原始全局图像中漏诊率超过 20%。</li>
-              <li><b>Finding II: 相对空间位置盲视。</b> 当图像旋转 180 度后，80% 的情况下模型无法正确更新其解剖学空间描述。</li>
-              <li><b>Finding III: 结构异常不敏感。</b> 对于人工制造的像素级结构不连贯，模型在超过 90% 的测试案例中完全忽视。</li>
+              <li><strong>Scale Inconsistency:</strong> Models failed to detect the same lesions in over 20% of global views despite recognizing them in local crops. [cite: 175, 176]</li>
+              <li><strong>Spatial Blindness:</strong> Models failed to update spatial descriptions in 80% of cases when images were rotated 180 degrees. [cite: 211, 212]</li>
+              <li><strong>Anomaly Insensitivity:</strong> Models failed to identify structural artifacts in over 90% of cases, overlooking obvious artificial perturbations. [cite: 216, 218]</li>
             </ul>
           </div>
         </div>
@@ -105,20 +120,22 @@
 
   <section class="section hero is-light">
     <div class="container is-max-desktop">
-      <h2 class="title is-3 section-title has-text-centered">The Med-Scout Framework</h2>
+      <h2 class="title is-3 section-title">Med-Scout Framework</h2>
       <div class="columns is-centered">
         <div class="column is-full">
           <div class="image-placeholder">
-            [插入图片：Figure 2 - Overview of the Med-Scout Framework]
+            [Insert Image 2: Med-Scout Framework Overview]
           </div>
+          
           <div class="content mt-4">
             <p>
-              Med-Scout 采用以数据为中心的方法，将未标注图像转化为三个可验证的任务：
-              <b>(1) 层级尺度定位 (Hierarchical Scale Localization)</b>：强制模型在不同缩放级别下保持坐标感知；
-              <b>(2) 拓扑拼图重建 (Topological Jigsaw Reconstruction)</b>：要求理解全局解剖布局；
-              <b>(3) 异常一致性检测 (Anomaly Consistency Detection)</b>：识别精细的结构不连贯。
-              优化过程结合了 <b>密集几何奖励 (Dense Geometric Reward)</b> 机制，确保训练过程稳健且平衡。
+              Med-Scout transforms unlabeled medical images into three verifiable geometric proxy tasks optimized via <strong>Group Relative Policy Optimization (GRPO)</strong>: 
             </p>
+            <ol>
+              <li><strong>Hierarchical Scale Localization:</strong> Compels the model to master absolute spatial grounding across varying scales. [cite: 282, 286]</li>
+              <li><strong>Topological Jigsaw Reconstruction:</strong> Forces the model to deduce canonical global layouts of anatomical structures. [cite: 287, 289]</li>
+              <li><strong>Anomaly Consistency Detection:</strong> Necessitates comparative reasoning to detect subtle pixel-level discontinuities. [cite: 290, 295]</li>
+            </ol>
           </div>
         </div>
       </div>
@@ -127,23 +144,21 @@
 
   <section class="section">
     <div class="container is-max-desktop">
-      <h2 class="title is-3 section-title has-text-centered">Experimental Results</h2>
+      <h2 class="title is-3 section-title">Benchmark & Performance</h2>
       <div class="columns is-centered">
         <div class="column is-full">
           <div class="image-placeholder">
-            [插入图片：Figure 3 - Performance Comparison on Med-Scout-Bench]
+            [Insert Image 3: Performance Comparison on Med-Scout-Bench]
           </div>
-          
           <div class="mt-6">
-            <h4 class="title is-4 has-text-centered">Quantitative Comparison</h4>
-            <div class="image-placeholder" style="min-height: 200px;">
-              [插入表格：Table 1 - Performance comparison with SOTA MLLMs]
+            <h4 class="title is-4">Main Results Comparison</h4>
+            <div class="image-placeholder" style="min-height: 250px;">
+              [Insert Table Placeholder: Quantitative Results on Public Benchmarks]
             </div>
           </div>
-
-          <div class="content mt-5">
+          <div class="content mt-4">
             <p>
-              Med-Scout 不仅显著减少了几何盲视，还在标准的医疗 VQA（如 Rad-VQA, VQA-RAD）和医疗报告生成任务中展示了强大的泛化能力。
+              Med-Scout yields substantial improvements across all backbones. For instance, the aligned Qwen3-VL-8B-Instruct improved average accuracy from 39.7% to 83.6%. [cite: 592, 593] It also enables strong generalization to standard medical VQA and clinical report generation tasks. [cite: 150]
             </p>
           </div>
         </div>
@@ -153,15 +168,16 @@
 
   <section class="section hero is-light">
     <div class="container is-max-desktop">
-      <h2 class="title is-3 section-title has-text-centered">Deep Analysis: Energy Landscape</h2>
+      <h2 class="title is-3 section-title">Theoretical Analysis: Energy Landscape</h2>
       <div class="columns is-centered">
         <div class="column is-full">
           <div class="image-placeholder">
-            [插入图片：Figure 13 - Energy Landscape Comparison (Factual vs. Hallucinated)]
+            [Insert Appendix Image: Energy Landscapes of Factual Consistency]
           </div>
+          
           <div class="content mt-4">
             <p>
-              通过能量函数分析发现，经过 Med-Scout 对齐后的模型为“事实描述”和“幻觉描述”之间建立了明显的<b>能量壁垒</b>。这从理论层面证明了 Med-Scout 成功使模型内部化了医疗图像的内在几何流形约束。
+              Following the Energy-Based model, we visualize energy distributions for factual versus spatially inverted reports. While baseline models exhibit overlapping distributions (indicating geometric blindness), Med-Scout establishes a <strong>distinct energy barrier</strong>, effectively assigning high-energy states to spatial hallucinations. [cite: 797, 799, 874]
             </p>
           </div>
         </div>
@@ -172,29 +188,20 @@
   <section class="section" id="BibTeX">
     <div class="container is-max-desktop content">
       <h2 class="title">Citation</h2>
-      <pre><code>@article{Chen2025MedScout,
+      <pre><code>@article{liu2025medscout,
   title={Med-Scout: Curing MLLMs' Geometric Blindness in Medical Perception via Geometry-Aware RL Post-Training},
-  author={Chen, Ruichao},
-  year={2025},
-  url={Project URL Here}
+  author={Liu, Anglin and Chen, Ruichao and Lu, Yi and Xu, Hongxia and Chen, Jintai},
+  journal={arXiv preprint},
+  year={2025}
 }</code></pre>
     </div>
   </section>
 
   <footer class="footer">
-    <div class="container">
-      <div class="content has-text-centered">
-        <p>
-          Built for the <strong>Med-Scout</strong> Project Page.
-        </p>
-      </div>
+    <div class="content has-text-centered">
+      <p>Project Page for Med-Scout Research.</p>
     </div>
   </footer>
 
-  <script>
-    function scrollToTop() {
-      window.scrollTo({top: 0, behavior: 'smooth'});
-    }
-  </script>
 </body>
 </html>
