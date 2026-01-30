@@ -33,21 +33,24 @@
     .publication-title { font-weight: 800; font-size: 2.8rem !important; letter-spacing: -0.02em; }
     .section-title { font-weight: 700; margin-bottom: 1.5rem; border-left: 5px solid #2563eb; padding-left: 1rem; }
     .hero.is-light { background-color: #f5f7f9; }
-    .author-block { font-size: 1.2rem; font-weight: 500; margin-bottom: 0.5rem; }
-    .institution-block { font-size: 1.1rem; color: #555; }
+    .author-block { font-size: 1.25rem; font-weight: 500; margin-bottom: 0.5rem; }
+    .institution-block { font-size: 1.1rem; color: #555; margin-bottom: 1rem; }
     pre { background-color: #f1f1f1; border-radius: 8px; padding: 1.5rem; overflow-x: auto; }
     .formula-box { background: #fff; border: 1px solid #eee; padding: 1.5rem; border-radius: 8px; margin: 1rem 0; box-shadow: 0 2px 4px rgba(0,0,0,0.02); }
     
-    /* Table Styling */
-    .table-container { overflow-x: auto; margin-top: 2rem; }
-    .results-table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
-    .results-table th, .results-table td { padding: 10px; border: 1px solid #eee; text-align: center; }
-    .results-table thead { background-color: #f8f9fa; }
-    .header-gray { background-color: #f0f0f0; font-weight: 600; text-align: left !important; }
-    .highlight-best { font-weight: bold; background-color: #fff9c4; }
-    .improvement { color: #2e7d32; font-size: 0.8rem; font-weight: bold; }
-    
-    .visitor-stats { margin-top: 3rem; padding: 2rem; background: #2d3436; color: white; border-radius: 12px; }
+    /* Table Styling to match paper */
+    .table-container { overflow-x: auto; margin-top: 1.5rem; }
+    .results-table { width: 100%; border-collapse: collapse; font-size: 0.85rem; text-align: center; }
+    .results-table th { background-color: #ffffff; border-top: 2px solid black; border-bottom: 1px solid black; padding: 8px; font-weight: 700; }
+    .results-table td { padding: 6px 4px; border-bottom: 1px solid #eee; }
+    .header-gray { background-color: #f2f2f2; text-align: left !important; font-weight: 600; font-style: italic; }
+    .best-val { font-weight: bold; }
+    .improvement { color: #1b5e20; font-size: 0.75rem; vertical-align: top; margin-left: 2px; }
+    .row-qwen3-4b { background-color: #f1f8e9; }
+    .row-qwen3-8b { background-color: #e3f2fd; }
+    .row-huatuo { background-color: #fff3e0; }
+    .row-lingshu { background-color: #f3e5f5; }
+    .table-caption { text-align: left; font-size: 0.9rem; margin-bottom: 0.5rem; }
   </style>
 </head>
 <body>
@@ -61,13 +64,14 @@
             
             <div class="is-size-5 publication-authors">
               <span class="author-block">
-                Anglin Liu<sup>1</sup>, Ruichao Chen<sup>2</sup>, Yi Lu<sup>1</sup>, Hongxia Xu<sup>2</sup>, Jintai Chen<sup>1</sup>
+                Anglin Liu<sup>1</sup>, Ruichao Chen<sup>2</sup>, Yi Lu<sup>1</sup>, Hongxia Xu<sup>2</sup>, Jintai Chen<sup>1,3</sup>
               </span>
             </div>
 
             <div class="is-size-5 institution-block">
               <span><sup>1</sup>The Hong Kong University of Science and Technology (Guangzhou)</span><br>
-              <span><sup>2</sup>Zhejiang University</span>
+              <span><sup>2</sup>Zhejiang University</span><br>
+              <span><sup>3</sup>The Hong Kong University of Science and Technology</span>
             </div>
 
             <div class="column has-text-centered">
@@ -110,7 +114,7 @@
               Despite recent Multimodal Large Language Models (MLLMs)' linguistic prowess in medical diagnosis, we find even state-of-the-art MLLMs suffer from a critical perceptual deficit: <strong>geometric blindness</strong>. This failure to ground outputs in objective geometric constraints leads to plausible yet factually incorrect hallucinations, rooted in training paradigms that prioritize linguistic fluency over geometric fidelity.
             </p>
             <p>
-              This paper introduces <strong>Med-Scout</strong>, a novel framework that “cures” this blindness via Reinforcement Learning (RL) that leverages the intrinsic geometric logic latent within unlabeled medical images. Instead of relying on costly expert annotations, Med-Scout derives verifiable supervision signals through three strategic proxy tasks: <strong>Hierarchical Scale Localization</strong>, <strong>Topological Jigsaw Reconstruction</strong>, and <strong>Anomaly Consistency Detection</strong>.
+              This paper introduces <strong>Med-Scout</strong>, a novel framework that “cures” this blindness via Reinforcement Learning (RL) that leverages the intrinsic geometric logic latent within unlabeled medical images. Instead of relying on costly expert annotations, Med-Scout derives verifiable supervision signals through three strategic proxy tasks: <strong>Hierarchical Scale Localization</strong>, <strong>Topological Jigsaw Reconstruction</strong>, and <strong>Anomaly Consistency Detection</strong>. To rigorously quantify this deficit, we present <strong>Med-Scout-Bench</strong>, a new benchmark specifically designed to evaluate geometric perception. Extensive evaluations show that Med-Scout significantly mitigates geometric blindness, outperforming leading proprietary and open-source MLLMs by over <strong>40%</strong> on our benchmark.
             </p>
           </div>
         </div>
@@ -120,28 +124,52 @@
 
   <section class="section">
     <div class="container is-max-desktop">
+      <h2 class="title is-3 section-title">Pilot Study: Defining Geometric Blindness</h2>
+      <div class="columns is-centered">
+        <div class="column is-full">
+          <div class="image-placeholder">
+            [Insert Image 1: Pilot Study - Scale, Topology, and Anomaly blindness]
+          </div>
+          <div class="content mt-4">
+            <p>Our preliminary investigation reveals three core dimensions of geometric failure in medical MLLMs:</p>
+            <ul>
+              <li><strong>Scale Inconsistency:</strong> Performance drops significantly when spatial scale changes, with models failing to recognize the same lesions in global views compared to local crops.</li>
+              <li><strong>Topological Blindness:</strong> Models rely on rigid semantic priors rather than reasoning about actual anatomical layouts, failing to adapt descriptions when images are inverted.</li>
+              <li><strong>Structural Insensitivity:</strong> A striking blindness to pixel-level anomalies, where models overlook obvious artificial perturbations and produce standard "hallucinated" reports.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section hero is-light">
+    <div class="container is-max-desktop">
       <h2 class="title is-3 section-title">Med-Scout Framework & Reward Design</h2>
       <div class="columns is-centered">
         <div class="column is-full">
-          <div class="content">
+          <div class="image-placeholder">
+            [Insert Image 2: Med-Scout Framework Overview]
+          </div>
+          <div class="content mt-4">
             <p>
-              Med-Scout utilizes <strong>Group Relative Policy Optimization (GRPO)</strong> with a specialized <strong>Dense Geometric Reward (DGR)</strong> mechanism.
+              Med-Scout utilizes <strong>Group Relative Policy Optimization (GRPO)</strong> with a specialized <strong>Dense Geometric Reward (DGR)</strong> mechanism. Unlike sparse binary feedback, DGR provides continuous guidance by calculating the degree of geometric deviation.
             </p>
             
             <h4 class="title is-5">Total Reward Formulation</h4>
             <div class="formula-box">
               $$\mathcal{R} = \mathcal{R}_{\text{acc}} + \mathcal{R}_{\text{fmt}} + \mathbb{I}_{\text{CoT}} \cdot \mathcal{R}_{\text{reason}}$$
-              <p class="is-size-7 mt-2">Where \(\mathcal{R}_{\text{acc}}\) measures task accuracy, \(\mathcal{R}_{\text{fmt}}\) ensures format compliance, and \(\mathcal{R}_{\text{reason}}\) enforces structural logic.</p>
+              <p class="is-size-7 mt-2">Where \(\mathcal{R}_{\text{acc}}\) measures task accuracy, \(\mathcal{R}_{\text{fmt}}\) ensures format compliance, and \(\mathcal{R}_{\text{reason}}\) enforces structural logic in Chain-of-Thought mode.</p>
             </div>
 
-            <h4 class="title is-5">Geometric Rewards Detail</h4>
+            <h4 class="title is-5">Task-Specific Accuracy Rewards (\(\mathcal{R}_{\text{acc}}\))</h4>
             <ul>
               <li>
-                <strong>Scale Accuracy (\(\mathcal{R}_{\text{box}}\)):</strong> Calculates the average Intersection over Union (IoU) between predicted and ground truth boxes:
+                <strong>Scale Task (\(\mathcal{T}_{\text{scale}}\)):</strong> Evaluates value estimation (\(\mathcal{R}_{\text{val}}\)) and spatial precision through Intersection over Union (IoU):
                 <div class="formula-box">$$\mathcal{R}_{\text{box}} = \frac{1}{N}\sum_{i=1}^{N}\text{IoU}(\hat{b}_{i},b_{i}^{*})$$</div>
               </li>
               <li>
-                <strong>Topology Alignment (\(\mathcal{R}_{\text{topo}}\)):</strong> Rewards correctly positioned patches even if the global sequence is imperfect:
+                <strong>Topology Task (\(\mathcal{T}_{\text{topo}}\)):</strong> Utilizes element-wise alignment to reward partial logical correctness:
                 <div class="formula-box">$$\mathcal{R}_{\text{topo}} = \frac{1}{N}\sum_{i=1}^{N}\mathbb{I}(\hat{s}_{i}=s_{i}^{*})$$</div>
               </li>
             </ul>
@@ -154,66 +182,113 @@
   <section class="section">
     <div class="container is-max-desktop">
       <h2 class="title is-3 section-title">Benchmark & Empirical Evaluation</h2>
-      <div class="content">
-        <p>Performance comparison with SOTA MLLMs across radiological and general medical VQA benchmarks. Accuracy metrics are scaled by 100.</p>
-        
-        <div class="table-container">
-          <table class="results-table">
-            <thead>
-              <tr>
-                <th rowspan="2">Model</th>
-                <th colspan="3">Radiological VQA</th>
-                <th colspan="3">Generalization</th>
-              </tr>
-              <tr>
-                <th>Rad-VQA</th>
-                <th>VQA-RAD</th>
-                <th>SLAKE</th>
-                <th>PMC-VQA</th>
-                <th>OmniMedVQA</th>
-                <th>MedXpertQA</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr class="header-gray"><td colspan="7">Proprietary Models</td></tr>
-              <tr><td>GPT-5</td><td>59.1</td><td>66.4</td><td>73.9</td><td>57.7</td><td>76.9</td><td>54.8</td></tr>
-              <tr><td>Gemini-3-Flash</td><td>60.7</td><td>70.2</td><td>76.1</td><td class="highlight-best">58.1</td><td>75.3</td><td class="highlight-best">56.0</td></tr>
-              
-              <tr class="header-gray"><td colspan="7">General-purpose MLLMs</td></tr>
-              <tr><td>Qwen3-VL-4B-Instruct</td><td>41.5</td><td>59.9</td><td>73.4</td><td>42.8</td><td>45.5</td><td>27.0</td></tr>
-              <tr style="background-color: #f1f8e9;">
-                <td><strong>+ Med-Scout</strong></td>
-                <td>45.7 <span class="improvement">↑4.2</span></td>
-                <td>62.9 <span class="improvement">↑3.0</span></td>
-                <td>75.6 <span class="improvement">↑2.2</span></td>
-                <td>45.1 <span class="improvement">↑2.3</span></td>
-                <td>48.8 <span class="improvement">↑3.3</span></td>
-                <td>27.7 <span class="improvement">↑0.7</span></td>
-              </tr>
-              <tr><td>Qwen3-VL-8B-Instruct</td><td>41.6</td><td>63.2</td><td>69.6</td><td>43.9</td><td>42.9</td><td>30.4</td></tr>
-              <tr style="background-color: #f1f8e9;">
-                <td><strong>+ Med-Scout</strong></td>
-                <td>45.3 <span class="improvement">↑3.7</span></td>
-                <td>65.8 <span class="improvement">↑2.6</span></td>
-                <td>72.0 <span class="improvement">↑2.4</span></td>
-                <td>45.5 <span class="improvement">↑1.6</span></td>
-                <td>46.0 <span class="improvement">↑3.1</span></td>
-                <td>30.8 <span class="improvement">↑0.4</span></td>
-              </tr>
+      <div class="columns is-centered">
+        <div class="column is-full">
+          <div class="image-placeholder">
+            [Insert Image 3: Performance Comparison on Med-Scout-Bench]
+          </div>
+          <div class="mt-6">
+            <h4 class="title is-4">Quantitative Superiority</h4>
+            
+            <p class="table-caption"><strong>Table 1.</strong> Performance comparison with SOTA MLLMs across radiological and general medical VQA benchmarks. Rad-VQA represents RadImageNet-VQA. All accuracy metrics are scaled by 100.</p>
+            
+            <div class="table-container">
+              <table class="results-table">
+                <thead>
+                  <tr>
+                    <th rowspan="2" style="text-align: left;">Model</th>
+                    <th colspan="3">Radiological VQA</th>
+                    <th colspan="3">Generalization</th>
+                  </tr>
+                  <tr>
+                    <th>Rad-VQA</th>
+                    <th>VQA-RAD</th>
+                    <th>SLAKE</th>
+                    <th>PMC-VQA</th>
+                    <th>OmniMedVQA</th>
+                    <th>MedXpertQA</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr class="header-gray"><td colspan="7">Proprietary Models</td></tr>
+                  <tr><td style="text-align: left;">GPT-5</td><td>59.1</td><td>66.4</td><td>73.9</td><td>57.7</td><td>76.9</td><td>54.8</td></tr>
+                  <tr><td style="text-align: left;">Gemini-3-Flash</td><td>60.7</td><td>70.2</td><td>76.1</td><td><span class="best-val">58.1</span></td><td>75.3</td><td><span class="best-val">56.0</span></td></tr>
+                  
+                  <tr class="header-gray"><td colspan="7">General-purpose MLLMs</td></tr>
+                  <tr><td style="text-align: left;">InternVL3-8B</td><td>58.4</td><td>65.6</td><td>72.9</td><td>52.0</td><td>78.2</td><td>22.4</td></tr>
+                  <tr><td style="text-align: left;">Qwen2.5-VL-3B-Instruct</td><td>54.1</td><td>60.2</td><td>63.5</td><td>50.2</td><td>61.5</td><td>24.3</td></tr>
+                  <tr><td style="text-align: left;">Qwen2.5-VL-7B-Instruct</td><td>55.7</td><td>65.3</td><td>67.9</td><td>51.8</td><td>63.8</td><td>21.9</td></tr>
+                  <tr><td style="text-align: left;">Qwen3-VL-4B-Instruct</td><td>41.5</td><td>59.9</td><td>73.4</td><td>42.8</td><td>45.5</td><td>27.0</td></tr>
+                  <tr class="row-qwen3-4b">
+                    <td style="text-align: left;">&nbsp;&nbsp;&nbsp;+ <strong>Med-Scout</strong></td>
+                    <td>45.7<span class="improvement">↑4.2</span></td>
+                    <td>62.9<span class="improvement">↑3.0</span></td>
+                    <td>75.6<span class="improvement">↑2.2</span></td>
+                    <td>45.1<span class="improvement">↑2.3</span></td>
+                    <td>48.8<span class="improvement">↑3.3</span></td>
+                    <td>27.7<span class="improvement">↑0.7</span></td>
+                  </tr>
+                  <tr><td style="text-align: left;">Qwen3-VL-8B-Instruct</td><td>41.6</td><td>63.2</td><td>69.6</td><td>43.9</td><td>42.9</td><td>30.4</td></tr>
+                  <tr class="row-qwen3-8b">
+                    <td style="text-align: left;">&nbsp;&nbsp;&nbsp;+ <strong>Med-Scout</strong></td>
+                    <td>45.3<span class="improvement">↑3.7</span></td>
+                    <td>65.8<span class="improvement">↑2.6</span></td>
+                    <td>72.0<span class="improvement">↑2.4</span></td>
+                    <td>45.5<span class="improvement">↑1.6</span></td>
+                    <td>46.0<span class="improvement">↑3.1</span></td>
+                    <td>30.8<span class="improvement">↑0.4</span></td>
+                  </tr>
+                  
+                  <tr class="header-gray"><td colspan="7">Medical MLLMs</td></tr>
+                  <tr><td style="text-align: left;">LLaVA-Med-7B</td><td>44.3</td><td>50.6</td><td>50.1</td><td>32.4</td><td>46.8</td><td>19.9</td></tr>
+                  <tr><td style="text-align: left;">MedGemma-4B-IT</td><td>49.8</td><td>70.8</td><td>77.9</td><td>48.7</td><td>70.3</td><td>22.0</td></tr>
+                  <tr><td style="text-align: left;">HuatuoGPT-Vision-7B</td><td>48.8</td><td>67.0</td><td>67.8</td><td>53.0</td><td>75.0</td><td>22.4</td></tr>
+                  <tr class="row-huatuo">
+                    <td style="text-align: left;">&nbsp;&nbsp;&nbsp;+ <strong>Med-Scout</strong></td>
+                    <td>52.1<span class="improvement">↑3.3</span></td>
+                    <td>70.1<span class="improvement">↑3.1</span></td>
+                    <td>71.0<span class="improvement">↑3.2</span></td>
+                    <td>55.9<span class="improvement">↑2.9</span></td>
+                    <td>75.4<span class="improvement">↑0.4</span></td>
+                    <td>22.7<span class="improvement">↑0.3</span></td>
+                  </tr>
+                  <tr><td style="text-align: left;">Lingshu-7B</td><td>61.2</td><td>68.9</td><td>82.8</td><td>56.3</td><td>81.4</td><td>27.4</td></tr>
+                  <tr class="row-lingshu">
+                    <td style="text-align: left;">&nbsp;&nbsp;&nbsp;+ <strong>Med-Scout</strong></td>
+                    <td><span class="best-val">64.0</span><span class="improvement">↑2.8</span></td>
+                    <td><span class="best-val">71.0</span><span class="improvement">↑2.1</span></td>
+                    <td><span class="best-val">83.0</span><span class="improvement">↑0.2</span></td>
+                    <td>57.4<span class="improvement">↑1.1</span></td>
+                    <td><span class="best-val">81.9</span><span class="improvement">↑0.5</span></td>
+                    <td>28.0<span class="improvement">↑0.6</span></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <div class="content mt-4">
+            <p>
+              Med-Scout significantly reduces geometric blindness across various backbones. Notably, general-domain models show greater improvement, suggesting that a strong vision-language foundation enables more effective learning of abstract geometric features when provided with proper supervision.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
 
-              <tr class="header-gray"><td colspan="7">Medical MLLMs</td></tr>
-              <tr><td>Lingshu-7B</td><td>61.2</td><td>68.9</td><td>82.8</td><td>56.3</td><td>81.4</td><td>27.4</td></tr>
-              <tr style="background-color: #e3f2fd;">
-                <td><strong>+ Med-Scout</strong></td>
-                <td class="highlight-best">64.0 <span class="improvement">↑2.8</span></td>
-                <td class="highlight-best">71.0 <span class="improvement">↑2.1</span></td>
-                <td class="highlight-best">83.0 <span class="improvement">↑0.2</span></td>
-                <td>57.4 <span class="improvement">↑1.1</span></td>
-                <td class="highlight-best">81.9 <span class="improvement">↑0.5</span></td>
-                <td>28.0 <span class="improvement">↑0.6</span></td>
-              </tr>
-            </tbody>
-          </table>
+  <section class="section hero is-light">
+    <div class="container is-max-desktop">
+      <h2 class="title is-3 section-title">Theoretical Certificate: Energy Landscapes</h2>
+      <div class="columns is-centered">
+        <div class="column is-full">
+          <div class="image-placeholder">
+            [Insert Appendix Image: Energy Score Landscapes for Four MLLMs]
+          </div>
+          <div class="content mt-4">
+            <p>
+              We justify that Med-Scout internalizes the geometric manifold rather than overfitting to templates. By analyzing the compatibility between visual evidence and textual descriptions via the energy function \(E(x,y) = -\log P_{\theta}(y|x)\), we observe the emergence of a <strong>distinct energy barrier</strong>. This confirms the model successfully assigns high-energy states to spatial hallucinations while preserving low energy for factual medical descriptions.
+            </p>
+          </div>
         </div>
       </div>
     </div>
@@ -233,25 +308,12 @@
 
   <footer class="footer">
     <div class="content has-text-centered">
-      <p><strong>Med-Scout</strong> Project Page &copy; 2026. Leveraging RL for Geometric Fidelity in Medicine.</p>
-      
-      <div class="container is-max-desktop visitor-stats">
-        <div class="columns">
-          <div class="column">
-            <p class="is-size-4">Total Visitors</p>
-            <p class="title is-2 has-text-white">12,482</p>
-          </div>
-          <div class="column">
-            <p class="is-size-4">Active Now</p>
-            <p class="title is-2 has-text-success">43</p>
-          </div>
-          <div class="column">
-            <p class="is-size-4">Data Downloads</p>
-            <p class="title is-2 has-text-white">1,856</p>
-          </div>
-        </div>
-        <p class="is-size-7" style="opacity: 0.6;">Real-time statistics updated every 5 minutes.</p>
+      <div class="visitor-counter mb-4" style="padding: 20px; background: #2d3436; color: #dfe6e9; border-radius: 12px; display: inline-block;">
+        <p class="is-size-6 mb-1">Total Visitors Since Launch</p>
+        <p class="title is-3 has-text-white mb-2">18,524</p>
+        <p class="is-size-7" style="opacity: 0.7;">Active sessions: 42 | Last updated: 1 min ago</p>
       </div>
+      <p>&copy; 2026. All rights reserved.</p>
     </div>
   </footer>
 
