@@ -5,14 +5,16 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Med-Scout: Curing MLLMs' Geometric Blindness in Medical Perception</title>
 
-  <link rel="stylesheet" href="static/css/bulma.min.css">
-  <link rel="stylesheet" href="static/css/index.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
-  <script defer src="static/js/fontawesome.all.min.js"></script>
+  
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
   
   <style>
-    body { font-family: 'Inter', sans-serif; color: #333; }
+    body { font-family: 'Inter', sans-serif; color: #333; line-height: 1.6; }
     .image-placeholder {
       width: 100%;
       background-color: #f8f9fa;
@@ -23,14 +25,19 @@
       color: #7a7a7a;
       font-weight: 500;
       margin-bottom: 1rem;
-      min-height: 350px;
-      border-radius: 8px;
+      min-height: 400px;
+      border-radius: 12px;
+      text-align: center;
+      padding: 20px;
     }
-    .publication-title { font-weight: 800; font-size: 2.5rem !important; }
-    .section-title { font-weight: 700; margin-bottom: 1.5rem; border-bottom: 2px solid #eee; padding-bottom: 0.5rem; }
+    .publication-title { font-weight: 800; font-size: 2.8rem !important; letter-spacing: -0.02em; }
+    .section-title { font-weight: 700; margin-bottom: 1.5rem; border-left: 5px solid #2563eb; padding-left: 1rem; }
     .hero.is-light { background-color: #f5f7f9; }
-    .author-block { font-size: 1.25rem; margin-bottom: 0.5rem; }
-    pre { background-color: #f1f1f1; border-radius: 6px; padding: 1.25rem; }
+    .author-block { font-size: 1.3rem; font-weight: 500; margin-bottom: 0.5rem; }
+    pre { background-color: #f1f1f1; border-radius: 8px; padding: 1.5rem; overflow-x: auto; }
+    .formula-box { background: #fff; border: 1px solid #eee; padding: 1.5rem; border-radius: 8px; margin: 1rem 0; box-shadow: 0 2px 4px rgba(0,0,0,0.02); }
+    .link-block a { transition: all 0.2s; }
+    .link-block a:hover { transform: translateY(-2px); }
   </style>
 </head>
 <body>
@@ -65,7 +72,7 @@
                 <span class="link-block">
                   <a href="https://huggingface.co/datasets" target="_blank" class="external-link button is-normal is-rounded is-dark">
                     <span class="icon">
-                      <img src="https://huggingface.co/front/assets/huggingface_logo-noborder.svg" alt="Hugging Face" style="width: 18px;">
+                      <img src="https://huggingface.co/front/assets/huggingface_logo-noborder.svg" alt="HF" style="width: 18px;">
                     </span>
                     <span>Hugging Face</span>
                   </a>
@@ -85,10 +92,10 @@
           <h2 class="title is-3 section-title">Abstract</h2>
           <div class="content has-text-justified">
             <p>
-              Despite recent Multimodal Large Language Models (MLLMs)' linguistic prowess in medical diagnosis, we find even state-of-the-art MLLMs suffer from a critical perceptual deficit: <strong>geometric blindness</strong>. This failure to ground outputs in objective geometric constraints leads to plausible yet factually incorrect hallucinations, rooted in training paradigms that prioritize linguistic fluency over geometric fidelity. [cite: 60, 61]
+              Despite recent Multimodal Large Language Models (MLLMs)' linguistic prowess in medical diagnosis, we find even state-of-the-art MLLMs suffer from a critical perceptual deficit: <strong>geometric blindness</strong>. This failure to ground outputs in objective geometric constraints leads to plausible yet factually incorrect hallucinations, rooted in training paradigms that prioritize linguistic fluency over geometric fidelity.
             </p>
             <p>
-              This paper introduces <strong>Med-Scout</strong>, a novel framework that “cures” this blindness via Reinforcement Learning (RL) that leverages the intrinsic geometric logic latent within unlabeled medical images. [cite: 62] Instead of relying on costly expert annotations, Med-Scout derives verifiable supervision signals through three strategic proxy tasks: <strong>Hierarchical Scale Localization</strong>, <strong>Topological Jigsaw Reconstruction</strong>, and <strong>Anomaly Consistency Detection</strong>. [cite: 63] To rigorously quantify this deficit, we present <strong>Med-Scout-Bench</strong>, a new benchmark specifically designed to evaluate geometric perception. [cite: 64] Extensive evaluations show that Med-Scout significantly mitigates geometric blindness, outperforming leading proprietary and open-source MLLMs by over <strong>40%</strong> on our benchmark. [cite: 65]
+              This paper introduces <strong>Med-Scout</strong>, a novel framework that “cures” this blindness via Reinforcement Learning (RL) that leverages the intrinsic geometric logic latent within unlabeled medical images. Instead of relying on costly expert annotations, Med-Scout derives verifiable supervision signals through three strategic proxy tasks: <strong>Hierarchical Scale Localization</strong>, <strong>Topological Jigsaw Reconstruction</strong>, and <strong>Anomaly Consistency Detection</strong>. To rigorously quantify this deficit, we present <strong>Med-Scout-Bench</strong>, a new benchmark specifically designed to evaluate geometric perception. Extensive evaluations show that Med-Scout significantly mitigates geometric blindness, outperforming leading proprietary and open-source MLLMs by over <strong>40%</strong> on our benchmark.
             </p>
           </div>
         </div>
@@ -98,19 +105,18 @@
 
   <section class="section">
     <div class="container is-max-desktop">
-      <h2 class="title is-3 section-title">Pilot Study: Unveiling Geometric Blindness</h2>
+      <h2 class="title is-3 section-title">Pilot Study: Defining Geometric Blindness</h2>
       <div class="columns is-centered">
         <div class="column is-full">
           <div class="image-placeholder">
-            [Insert Image 1: Pilot Study - Findings I, II, and III]
+            [Insert Image 1: Pilot Study - Scale, Topology, and Anomaly blindness]
           </div>
-          
           <div class="content mt-4">
-            <p>We identified three critical findings through preliminary experiments on state-of-the-art models: [cite: 171]</p>
+            <p>Our preliminary investigation reveals three core dimensions of geometric failure in medical MLLMs:</p>
             <ul>
-              <li><strong>Scale Inconsistency:</strong> Models failed to detect the same lesions in over 20% of global views despite recognizing them in local crops. [cite: 175, 176]</li>
-              <li><strong>Spatial Blindness:</strong> Models failed to update spatial descriptions in 80% of cases when images were rotated 180 degrees. [cite: 211, 212]</li>
-              <li><strong>Anomaly Insensitivity:</strong> Models failed to identify structural artifacts in over 90% of cases, overlooking obvious artificial perturbations. [cite: 216, 218]</li>
+              <li><strong>Scale Inconsistency:</strong> Performance drops significantly when spatial scale changes, with models failing to recognize the same lesions in global views compared to local crops.</li>
+              <li><strong>Topological Blindness:</strong> Models rely on rigid semantic priors rather than reasoning about actual anatomical layouts, failing to adapt descriptions when images are inverted.</li>
+              <li><strong>Structural Insensitivity:</strong> A striking blindness to pixel-level anomalies, where models overlook obvious artificial perturbations and produce standard "hallucinated" reports.</li>
             </ul>
           </div>
         </div>
@@ -120,22 +126,38 @@
 
   <section class="section hero is-light">
     <div class="container is-max-desktop">
-      <h2 class="title is-3 section-title">Med-Scout Framework</h2>
+      <h2 class="title is-3 section-title">Med-Scout Framework & Reward Design</h2>
       <div class="columns is-centered">
         <div class="column is-full">
           <div class="image-placeholder">
             [Insert Image 2: Med-Scout Framework Overview]
           </div>
-          
           <div class="content mt-4">
             <p>
-              Med-Scout transforms unlabeled medical images into three verifiable geometric proxy tasks optimized via <strong>Group Relative Policy Optimization (GRPO)</strong>: 
+              Med-Scout utilizes <strong>Group Relative Policy Optimization (GRPO)</strong> with a specialized <strong>Dense Geometric Reward (DGR)</strong> mechanism. Unlike sparse binary feedback, DGR provides continuous guidance by calculating the degree of geometric deviation.
             </p>
-            <ol>
-              <li><strong>Hierarchical Scale Localization:</strong> Compels the model to master absolute spatial grounding across varying scales. [cite: 282, 286]</li>
-              <li><strong>Topological Jigsaw Reconstruction:</strong> Forces the model to deduce canonical global layouts of anatomical structures. [cite: 287, 289]</li>
-              <li><strong>Anomaly Consistency Detection:</strong> Necessitates comparative reasoning to detect subtle pixel-level discontinuities. [cite: 290, 295]</li>
-            </ol>
+            
+            <h4 class="title is-5">Total Reward Formulation</h4>
+            <div class="formula-box">
+              $$\mathcal{R} = \mathcal{R}_{acc} + \mathcal{R}_{fmt} + \mathbb{I}_{CoT} \cdot \mathcal{R}_{reason}$$
+              <p class="is-size-7 mt-2">Where \(\mathcal{R}_{acc}\) measures task accuracy, \(\mathcal{R}_{fmt}\) ensures format compliance, and \(\mathcal{R}_{reason}\) enforces structural logic in Chain-of-Thought mode.</p>
+            </div>
+
+            <h4 class="title is-5">Task-Specific Accuracy Rewards (\(\mathcal{R}_{acc}\))</h4>
+            <ul>
+              <li>
+                <strong>Scale Task (\(\mathcal{T}_{scale}\)):</strong> Evaluates value estimation (\(\mathcal{R}_{val}\)) and spatial precision through Intersection over Union (IoU):
+                <div class="formula-box">$$\mathcal{R}_{box} = \frac{1}{N}\sum_{i=1}^{N}IoU(\hat{b}_{i},b_{i}^{*})$$</div>
+              </li>
+              <li>
+                <strong>Topology Task (\(\mathcal{T}_{topo}\)):</strong> Utilizes element-wise alignment to reward partial logical correctness:
+                <div class="formula-box">$$\mathcal{R}_{topo} = \frac{1}{N}\sum_{i=1}^{N}\mathbb{I}(\hat{s}_{i}=s_{i}^{*})$$</div>
+              </li>
+              <li>
+                <strong>Anomaly Task (\(\mathcal{T}_{anom}\)):</strong> Guiding the model toward the correct region via Euclidean distance decay:
+                <div class="formula-box">$$\mathcal{R}_{anom} = \exp\left( -\frac{(u-\hat{u})^2 + (v-\hat{v})^2}{\tau} \right)$$</div>
+              </li>
+            </ul>
           </div>
         </div>
       </div>
@@ -144,21 +166,21 @@
 
   <section class="section">
     <div class="container is-max-desktop">
-      <h2 class="title is-3 section-title">Benchmark & Performance</h2>
+      <h2 class="title is-3 section-title">Benchmark & Empirical Evaluation</h2>
       <div class="columns is-centered">
         <div class="column is-full">
           <div class="image-placeholder">
             [Insert Image 3: Performance Comparison on Med-Scout-Bench]
           </div>
           <div class="mt-6">
-            <h4 class="title is-4">Main Results Comparison</h4>
+            <h4 class="title is-4">Quantitative Superiority</h4>
             <div class="image-placeholder" style="min-height: 250px;">
-              [Insert Table Placeholder: Quantitative Results on Public Benchmarks]
+              [Insert Table: Performance Comparison across Public VQA & Report Benchmarks]
             </div>
           </div>
           <div class="content mt-4">
             <p>
-              Med-Scout yields substantial improvements across all backbones. For instance, the aligned Qwen3-VL-8B-Instruct improved average accuracy from 39.7% to 83.6%. [cite: 592, 593] It also enables strong generalization to standard medical VQA and clinical report generation tasks. [cite: 150]
+              Med-Scout significantly reduces geometric blindness across various backbones. Notably, general-domain models show greater improvement, suggesting that a strong vision-language foundation enables more effective learning of abstract geometric features when provided with proper supervision.
             </p>
           </div>
         </div>
@@ -168,16 +190,15 @@
 
   <section class="section hero is-light">
     <div class="container is-max-desktop">
-      <h2 class="title is-3 section-title">Theoretical Analysis: Energy Landscape</h2>
+      <h2 class="title is-3 section-title">Theoretical Certificate: Energy Landscapes</h2>
       <div class="columns is-centered">
         <div class="column is-full">
           <div class="image-placeholder">
-            [Insert Appendix Image: Energy Landscapes of Factual Consistency]
+            [Insert Appendix Image: Energy Score Landscapes for Four MLLMs]
           </div>
-          
           <div class="content mt-4">
             <p>
-              Following the Energy-Based model, we visualize energy distributions for factual versus spatially inverted reports. While baseline models exhibit overlapping distributions (indicating geometric blindness), Med-Scout establishes a <strong>distinct energy barrier</strong>, effectively assigning high-energy states to spatial hallucinations. [cite: 797, 799, 874]
+              We justify that Med-Scout internalizes the geometric manifold rather than overfitting to templates. By analyzing the compatibility between visual evidence and textual descriptions via the energy function \(E(x,y) = -\log P_{\theta}(y|x)\), we observe the emergence of a <strong>distinct energy barrier</strong>. This confirms the model successfully assigns high-energy states to spatial hallucinations while preserving low energy for factual medical descriptions.
             </p>
           </div>
         </div>
@@ -199,7 +220,7 @@
 
   <footer class="footer">
     <div class="content has-text-centered">
-      <p>Project Page for Med-Scout Research.</p>
+      <p><strong>Med-Scout</strong> Project Page &copy; 2025-2026. Leveraging RL for Geometric Fidelity in Medicine.</p>
     </div>
   </footer>
 
