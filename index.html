@@ -55,31 +55,18 @@
     
     .table-caption { text-align: left; font-size: 0.9rem; margin-bottom: 0.5rem; }
 
-    /* Dashboard Style Visitor Counter */
-    .visitor-stats-card {
-      display: inline-block;
-      background-color: #2d3436;
-      color: #ffffff;
-      padding: 20px 40px;
-      border-radius: 12px;
-      margin: 2rem 0;
+    /* Simplified Visitor Counter Style */
+    .visitor-stats-simple {
+      font-size: 1.2rem;
+      color: #4a4a4a;
+      margin: 3rem 0;
       text-align: center;
     }
-    .stats-title {
-      font-size: 1rem;
-      color: #dfe6e9;
-      margin-bottom: 5px;
-    }
-    .stats-number {
-      font-size: 2.5rem;
+    .stats-count {
+      font-size: 2rem;
       font-weight: 800;
-      display: block;
-      color: #ffffff;
-    }
-    .stats-detail {
-      font-size: 0.8rem;
-      color: #b2bec3;
-      margin-top: 5px;
+      color: #802e8c; /* Purple highlight color */
+      margin: 0 5px;
     }
   </style>
 </head>
@@ -315,17 +302,12 @@
 
   <footer class="footer">
     <div class="content has-text-centered">
-      <div class="visitor-stats-card">
-        <div class="stats-title">Total Visitors Since Launch</div>
-        
+      <div class="visitor-stats-simple">
+        This homepage is visited 
         <span id="busuanzi_container_site_pv">
-          <span class="stats-number" id="busuanzi_value_site_pv">--</span>
-        </span>
-
-        <div class="stats-detail">
-          Active sessions: <span id="busuanzi_value_site_uv">--</span> | 
-          Last updated: Just now
-        </div>
+          <span class="stats-count" id="busuanzi_value_site_pv">--</span>
+        </span> 
+        times
       </div>
     </div>
   </footer>
