@@ -43,20 +43,43 @@
     .results-table { width: 100%; border-collapse: collapse; font-size: 0.85rem; text-align: center; }
     .results-table th { background-color: #ffffff; border-top: 2px solid black; border-bottom: 1px solid black; padding: 8px; font-weight: 700; }
     .results-table td { padding: 6px 4px; border-bottom: 1px solid #eee; }
-    .header-gray { background-color: #f2f2f2; text-align: left !important; font-weight: 600; font-style: italic; }
+    .header-gray { background-color: #f2f2f2 !important; text-align: left !important; font-weight: 600; font-style: italic; }
     .best-val { font-weight: bold; }
     .improvement { color: #1b5e20; font-size: 0.75rem; vertical-align: top; margin-left: 2px; }
-    .row-qwen3-4b { background-color: #E8F5E9; }
-    .row-qwen3-8b { background-color: #E3F2FD; }
-    .row-huatuo { background-color: #fff3e0; }
-    .row-lingshu { background-color: #F3E5F5; }
+    
+    /* Paper-aligned Table Colors */
+    .row-qwen3-4b { background-color: #E8F5E9 !important; }
+    .row-qwen3-8b { background-color: #E3F2FD !important; }
+    .row-huatuo { background-color: #FFF3E0 !important; }
+    .row-lingshu { background-color: #F3E5F5 !important; }
+    
     .table-caption { text-align: left; font-size: 0.9rem; margin-bottom: 0.5rem; }
 
-    .visitor-counter {
-      color: #888;
-      font-size: 0.9rem;
+    /* Dashboard Style Visitor Counter */
+    .visitor-stats-card {
+      display: inline-block;
+      background-color: #2d3436;
+      color: #ffffff;
+      padding: 20px 40px;
+      border-radius: 12px;
       margin: 2rem 0;
       text-align: center;
+    }
+    .stats-title {
+      font-size: 1rem;
+      color: #dfe6e9;
+      margin-bottom: 5px;
+    }
+    .stats-number {
+      font-size: 2.5rem;
+      font-weight: 800;
+      display: block;
+      color: #ffffff;
+    }
+    .stats-detail {
+      font-size: 0.8rem;
+      color: #b2bec3;
+      margin-top: 5px;
     }
   </style>
 </head>
@@ -292,10 +315,17 @@
 
   <footer class="footer">
     <div class="content has-text-centered">
-      <div class="visitor-counter">
+      <div class="visitor-stats-card">
+        <div class="stats-title">Total Visitors Since Launch</div>
+        
         <span id="busuanzi_container_site_pv">
-          Total Visitors: <span id="busuanzi_value_site_pv"></span>
+          <span class="stats-number" id="busuanzi_value_site_pv">--</span>
         </span>
+
+        <div class="stats-detail">
+          Active sessions: <span id="busuanzi_value_site_uv">--</span> | 
+          Last updated: Just now
+        </div>
       </div>
     </div>
   </footer>
